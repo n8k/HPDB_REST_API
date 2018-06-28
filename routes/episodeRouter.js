@@ -91,5 +91,19 @@ episodeRouter.route('/:episodeId')
 		.catch((err) => next(err));
 	})
 
+// Route at /character to find episodes with one main character __________________________________
+
+episodeRouter.route('/character/:characterName')
+	.get((req,res,next) => {
+		characterName = req.params.characterName.toLowerCase();
+		Episode.findMainCharacter(characterName)
+		.then(
+			(response) => {
+				{okFactory(res, response);}
+				console.log(response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
+
 
 module.exports = episodeRouter;

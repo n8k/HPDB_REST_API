@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var mainCharacters = new Schema({
-	Poirot: 		{type: Boolean, default: true},
-	Hastings: 	Boolean,
-	Lemon: 			Boolean,
-	Japp: 			Boolean,
-	Oliver:			Boolean
+	poirot: 		{type: Boolean, default: true},
+	hastings: 	Boolean,
+	lemon: 			Boolean,
+	japp: 			Boolean,
+	oliver:			Boolean
 });
 
 var poirotTropes = new Schema({
@@ -43,9 +43,15 @@ var episodeSchema = new Schema({
 	director: 							{String},
 	writer: 								{String},
 	mood: 									{String},
-	animal: 							  {applies: Boolean, typeOfAnimal: [String]} 
 },
 {timestamps: true}
 );
+
+// Statics ____________________________________________________________________
+
+episodeSchema.statics.findMainCharacter = function(name) {
+	let query = "mainCharacters." + name;
+	return this.find({[query]:true});
+}
 
 module.exports = mongoose.model('Episode', episodeSchema);
