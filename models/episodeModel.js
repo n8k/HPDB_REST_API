@@ -10,15 +10,16 @@ var mainCharacters = new Schema({
 });
 
 var poirotTropes = new Schema({
-	poirotOnHoliday: 											Boolean,
-	poirotTriesToPreventMurder: 					Boolean,
-	poirotCompulsiveBehavior: 						Boolean,
-	poirotIsReallyBelgian: 								Boolean,
-	poirotInsultsSelf: 										Boolean,
-	special: 															Boolean,
-	poirotInvitedToCrimeScene: 						Boolean,
-	tryToOutsmartWorldsGreatestDetective: Boolean,
-	poirotLenientJudgeAndJury: 						Boolean
+	poirotOnHoliday: 											String,
+	poirotTriesToPreventMurder: 					String,
+	poirotCompulsiveBehavior: 						String,
+	poirotIsReallyBelgian: 								String,
+	poirotInvitedToCrimeScene: 						String,
+	tryToOutsmartWorldsGreatestDetective: String,
+	poirotLenientJudgeAndJury: 						String,
+	hastingsGolf: 												String,
+	frenchVsEnglishCuisine:								String,
+	special: 															String
 });
 
 var crimeSchema = new Schema({
