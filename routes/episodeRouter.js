@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 // const authenticate = require('../authenticate');
 // const cors = require('cors');
 const Episode = require('../models/episodeModel');
@@ -91,19 +92,27 @@ episodeRouter.route('/:episodeId')
 		.catch((err) => next(err));
 	})
 
-// Route at /character to find episodes with one main character __________________________________
+// Route at /character/:characterName to find episodes with one main character ____________________
 
 episodeRouter.route('/character/:characterName')
 	.get((req,res,next) => {
 		characterName = req.params.characterName.toLowerCase();
 		Episode.findMainCharacter(characterName)
 		.then(
-			(response) => {
-				{okFactory(res, response);}
-				console.log(response);},
+			(response) => {{okFactory(res, response);}},
 			(err) 		 => next(err))
 		.catch((err) => next(err));
 	})
 
+// Route at /crime:/criminalAct to find episodes with the specified criminalAct ___________________
+	episodeRouter.route('/crime/:criminalAct')
+		.get((req,res,next) => {
+			let criminalAct = req.params.criminalAct.toLowerCase();
+			Episode.findCrime(criminalAct)
+			.then(
+				(response) => {{okFactory(res, response);}},
+				(err) 		 => next(err))
+			.catch((err) => next(err));
+		})
 
 module.exports = episodeRouter;
