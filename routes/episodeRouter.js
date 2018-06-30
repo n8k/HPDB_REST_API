@@ -61,7 +61,7 @@ episodeRouter.route('/')
 
 // Route at /episode/:episodeId for one episode____________________________________________________
 
-episodeRouter.route('/:episodeId')
+episodeRouter.route('/id/:episodeId')
 
 	.get((req,res,next) => {
 		Episode.findById(req.params.episodeId)
@@ -114,5 +114,26 @@ episodeRouter.route('/character/:characterName')
 				(err) 		 => next(err))
 			.catch((err) => next(err));
 		})
+
+// Route at /s:seasonNumber to find all episodes in a season_______________________________________
+episodeRouter.route('/s:seasonNumber')
+	.get((req,res,next) => {
+		Episode.findSeason(req.params.seasonNumber, null)
+		.then(
+			(response) => {{okFactory(res, response);}},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
+
+// Route at /s:seasonNumber/e:episodeNumber to find a specifc episode in a season__________________
+	episodeRouter.route('/s:seasonNumber/e:episodeNumber')
+		.get((req,res,next) => {
+			Episode.findEpisode(req.params.seasonNumber, req.params.episodeNumber)
+			.then(
+				(response) => {{okFactory(res, response);}},
+				(err) 		 => next(err))
+			.catch((err) => next(err));
+		})
+
 
 module.exports = episodeRouter;

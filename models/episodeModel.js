@@ -64,6 +64,17 @@ episodeSchema.statics.findMainCharacter = function(name) {
 	return this.find({[query]:true});
 }
 
+episodeSchema.statics.findSeason = function(season) {
+	return this.find({"season":[season]});
+}
+
+episodeSchema.statics.findEpisode = function(season,episode) {
+	return this.find({
+		"season": [season],
+		"episode":[episode]
+	});
+}
+
 episodeSchema.statics.findCrime = function(crime) {
 return new Promise(
 	(resolve, reject) => {
