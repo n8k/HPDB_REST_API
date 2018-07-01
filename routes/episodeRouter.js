@@ -126,14 +126,24 @@ episodeRouter.route('/s:seasonNumber')
 	})
 
 // Route at /s:seasonNumber/e:episodeNumber to find a specifc episode in a season__________________
-	episodeRouter.route('/s:seasonNumber/e:episodeNumber')
-		.get((req,res,next) => {
-			Episode.findEpisode(req.params.seasonNumber, req.params.episodeNumber)
-			.then(
-				(response) => {{okFactory(res, response);}},
-				(err) 		 => next(err))
-			.catch((err) => next(err));
-		})
+episodeRouter.route('/s:seasonNumber/e:episodeNumber')
+	.get((req,res,next) => {
+		Episode.findEpisode(req.params.seasonNumber, req.params.episodeNumber)
+		.then(
+			(response) => {{okFactory(res, response);}},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
+
+// Route at /s:seasonNumber/e:episodeNumber to find a specifc episode in a season__________________
+episodeRouter.route('/tropes/:tropeType')
+.get((req,res,next) => {
+	Episode.findTrope(req.params.tropeType)
+	.then(
+		(response) => {{okFactory(res, response);}},
+		(err) 		 => next(err))
+	.catch((err) => next(err));
+})
 
 
 module.exports = episodeRouter;

@@ -14,17 +14,17 @@ var mainCharacters = new Schema({
 });
 
 var poirotTropes = new Schema({
-	poirotOnHoliday: 											String,
-	poirotTriesToPreventMurder: 					String,
-	poirotCompulsiveBehavior: 						String,
-	poirotIsReallyBelgian: 								String,
-	poirotInvitedToCrimeScene: 						String,
-	tryToOutsmartWorldsGreatestDetective: String,
-	poirotLenientJudgeAndJury: 						String,
-	hastingsGolf: 												String,
-	frenchVsEnglishCuisine:								String,
-	poirotSolvesColdCase: 								String,
-	special: 															String
+	poirotOnHoliday: 											Boolean,
+	poirotTriesToPreventMurder: 					Boolean,
+	poirotCompulsiveBehavior: 						Boolean,
+	poirotIsReallyBelgian: 								Boolean,
+	poirotInvitedToCrimeScene: 						Boolean,
+	tryToOutsmartWorldsGreatestDetective: Boolean,
+	poirotLenientJudgeAndJury: 						Boolean,
+	hastingsGolf: 												Boolean,
+	frenchVsEnglishCuisine:								Boolean,
+	poirotSolvesColdCase: 								Boolean,
+	special: 															Boolean
 });
 
 var crimeSchema = new Schema({
@@ -73,6 +73,11 @@ episodeSchema.statics.findEpisode = function(season,episode) {
 		"season": [season],
 		"episode":[episode]
 	});
+}
+
+episodeSchema.statics.findTrope = function(tropeType) {
+	let query = "tropes." + tropeType;
+	return this.find({[query]:true});
 }
 
 episodeSchema.statics.findCrime = function(crime) {
