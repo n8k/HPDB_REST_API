@@ -82,13 +82,11 @@ episodeSchema.statics.findTrope = function(tropeType) {
 
 episodeSchema.statics.searchInTitle = function(searchTerm) {
 	let regexTerm = new RegExp((searchTerm), 'i');
-	// (search term) to capture full word or phrase in regex
 	return this.find({title:{$regex:regexTerm}});
 }
 
 episodeSchema.statics.searchInSummary = function(searchTerm) {
 	let regexTerm = new RegExp((searchTerm), 'i');
-	// (search term) to capture full word or phrase in regex
 	return this.find({episodeSummary:{$regex:regexTerm}});
 }
 
