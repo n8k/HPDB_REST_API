@@ -145,5 +145,24 @@ episodeRouter.route('/tropes/:tropeType')
 	.catch((err) => next(err));
 })
 
+// Route at /title/:searchTerm for regex search of words within the episode title__________________
+episodeRouter.route('/title/:searchTerm')
+.get((req,res,next) => {
+	Episode.searchInTitle(req.params.searchTerm)
+	.then(
+		(response) => {{okFactory(res, response);}},
+		(err) 		 => next(err))
+	.catch((err) => next(err));
+})
+
+// Route at /summary/:searchTerm for regex search of words within the episode title__________________
+episodeRouter.route('/summary/:searchTerm')
+.get((req,res,next) => {
+	Episode.searchInSummary(req.params.searchTerm)
+	.then(
+		(response) => {{okFactory(res, response);}},
+		(err) 		 => next(err))
+	.catch((err) => next(err));
+})
 
 module.exports = episodeRouter;
