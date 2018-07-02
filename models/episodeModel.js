@@ -80,15 +80,20 @@ episodeSchema.statics.findTrope = function(tropeType) {
 	return this.find({[query]:true});
 }
 
-episodeSchema.statics.searchInTitle = function(searchTerm) {
+episodeSchema.statics.regexSearch = function(field, searchTerm) {
 	let regexTerm = new RegExp((searchTerm), 'i');
-	return this.find({title:{$regex:regexTerm}});
+	return this.find({[field]:{$regex:regexTerm}});	
 }
 
-episodeSchema.statics.searchInSummary = function(searchTerm) {
-	let regexTerm = new RegExp((searchTerm), 'i');
-	return this.find({episodeSummary:{$regex:regexTerm}});
-}
+// episodeSchema.statics.searchInTitle = function(searchTerm) {
+// 	let regexTerm = new RegExp((searchTerm), 'i');
+// 	return this.find({title:{$regex:regexTerm}});
+// }
+
+// episodeSchema.statics.searchInSummary = function(searchTerm) {
+// 	let regexTerm = new RegExp((searchTerm), 'i');
+// 	return this.find({episodeSummary:{$regex:regexTerm}});
+// }
 
 episodeSchema.statics.findCrime = function(crime) {
 return new Promise(

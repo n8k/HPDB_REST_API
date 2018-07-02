@@ -148,7 +148,7 @@ episodeRouter.route('/tropes/:tropeType')
 // Route at /title/:searchTerm for regex search of words within the episode title__________________
 episodeRouter.route('/title/:searchTerm')
 .get((req,res,next) => {
-	Episode.searchInTitle(req.params.searchTerm)
+	Episode.regexSearch("title", req.params.searchTerm)
 	.then(
 		(response) => {{okFactory(res, response);}},
 		(err) 		 => next(err))
@@ -158,7 +158,7 @@ episodeRouter.route('/title/:searchTerm')
 // Route at /summary/:searchTerm for regex search of words within the episode title__________________
 episodeRouter.route('/summary/:searchTerm')
 .get((req,res,next) => {
-	Episode.searchInSummary(req.params.searchTerm)
+	Episode.regexSearch("episodeSummary", req.params.searchTerm)
 	.then(
 		(response) => {{okFactory(res, response);}},
 		(err) 		 => next(err))
