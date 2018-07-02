@@ -99,7 +99,8 @@ return new Promise(
 				let query = [];
 				for (var i = episodeList.length - 1; i >= 0; i--) {
 					for (var j = episodeList[i].crimes.length - 1; j>=0; j--){
-						if (episodeList[i].crimes[j].criminalAct.includes(crime)) {
+						let compareString = episodeList[i].crimes[j].criminalAct.toUpperCase();
+						if (compareString.includes(crime.toUpperCase())) {
 							query.push(episodeList[i]._id.toString());
 						}
 					}
