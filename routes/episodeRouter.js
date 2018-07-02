@@ -165,4 +165,24 @@ episodeRouter.route('/summary/:searchTerm')
 	.catch((err) => next(err));
 })
 
+// Route at /writer/:searchTerm for regex search of words within writer field______________________
+episodeRouter.route('/writer/:searchTerm')
+.get((req,res,next) => {
+	Episode.regexSearch("writer", req.params.searchTerm)
+	.then(
+		(response) => {{okFactory(res, response);}},
+		(err) 		 => next(err))
+	.catch((err) => next(err));
+})
+
+// Route at /writer/:searchTerm for regex search of words within writer field______________________
+episodeRouter.route('/director/:searchTerm')
+.get((req,res,next) => {
+	Episode.regexSearch("director", req.params.searchTerm)
+	.then(
+		(response) => {{okFactory(res, response);}},
+		(err) 		 => next(err))
+	.catch((err) => next(err));
+})
+
 module.exports = episodeRouter;

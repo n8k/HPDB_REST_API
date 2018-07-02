@@ -46,9 +46,9 @@ var episodeSchema = new Schema({
 	supportingCharacters: 	[String],
 	tropes: 								poirotTropes,
 	crimes: 								[crimeSchema], 
-	director: 							{String},
-	writer: 								{String},
-	mood: 									{String},
+	director: 							String,
+	writer: 								String,
+	mood: 									String,
 },
 {timestamps: true}
 );
@@ -84,16 +84,6 @@ episodeSchema.statics.regexSearch = function(field, searchTerm) {
 	let regexTerm = new RegExp((searchTerm), 'i');
 	return this.find({[field]:{$regex:regexTerm}});	
 }
-
-// episodeSchema.statics.searchInTitle = function(searchTerm) {
-// 	let regexTerm = new RegExp((searchTerm), 'i');
-// 	return this.find({title:{$regex:regexTerm}});
-// }
-
-// episodeSchema.statics.searchInSummary = function(searchTerm) {
-// 	let regexTerm = new RegExp((searchTerm), 'i');
-// 	return this.find({episodeSummary:{$regex:regexTerm}});
-// }
 
 episodeSchema.statics.findCrime = function(crime) {
 return new Promise(
