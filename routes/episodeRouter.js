@@ -185,4 +185,12 @@ episodeRouter.route('/director/:searchTerm')
 	.catch((err) => next(err));
 })
 
+episodeRouter.route('/mood/:searchTerm')
+.get((req,res,next) => {
+	Episode.regexSearch("mood", req.params.searchTerm)
+	.then(
+		(response) => {{okFactory(res, response);}},
+		(err) 		 => next(err))
+	.catch((err) => next(err));
+})
 module.exports = episodeRouter;
