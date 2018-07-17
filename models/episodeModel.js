@@ -17,26 +17,33 @@ var poirotTropes = new Schema({
 	poirotOnHoliday: 						Boolean,	// Setting is Poirot on holiday
 	poirotTriesToPreventMurder: Boolean,	// Poirot tries to prevent murder
 	poirotTriesToPreventCrime:  Boolean,	// Poirot tries to prevent other crime
-	poirotCompulsiveBehavior: 	Boolean,	// Poirot exhibits some nervous, compulsive behavior
+	poirotCompulsiveSymmetry: 	Boolean,	// Poirot exhibits a compulsive obsession with symmetry and straightening items
 	poirotIsReallyBelgian: 			Boolean,	// Poirot is mistaken for French and informs them he's Belgian
 	poirotAvuncular: 						Boolean,	// Poirot assumes a protective role of a younger lady
 	poirotCommitsCrime:					Boolean,	// Poirot commits a crime
 	poirotSmitten:  						Boolean,	// Poirot in love
-	poirotLenientJudgeAndJury: 	Boolean,	// Poirot solves the case, but does not punish the perpetrators
+	poirotLenientJudgeAndJury: 	Boolean,	// Poirot solves the case or exposes a crime but does not punish the perpetrators
 	poirotSolvesColdCase: 			Boolean,	// Poirot solves an old case
 	poirotMatchmaker: 					Boolean,	// Poirot plays matchmaker and pairs a new couple
 	poirotRetirement: 					Boolean,	// Poirot retires
 	poirotDentist: 							Boolean,	// Poirot visits the dentist
 	hastingsGolf: 							Boolean,	// Hastings shows an interest in golf
 	hastingsCar:  							Boolean,	// Hastings shows an interest in cars
+	hastingsHobby: 							Boolean,  // Hastings takes up a hobby
 	hastingsSmitten: 						Boolean,	// Hastings in love
+	hastingsLadyPuzzlement:  		Boolean,  // Hastings doesn't understand women
+	hastingsSolvesCase: 				Boolean,  // Hastings solves the case
+	hastingsTravel: 						Boolean,  // Hastings travels abroad
 	msLemonsFilingSystem: 			Boolean,	// Ms. Lemon's filing system is featured in the episode
-	msLemonSupernatural: 				Boolean,	// Ms. Lemon shows interest or ability in the supernatural, occult or playacting/deception.
+	msLemonSupernatural: 				Boolean,	// Ms. Lemon shows interest or ability in the supernatural or occult
+	msLemonOrderAndMethod: 			Boolean,  // Ms. Lemon does detective work
 	artImitatesArt:							Boolean,	// Episode involves a murder-mystery play or novel
 	hostIsMurdered: 						Boolean,	// The host of a party or invite is murdered at, during, or after the event
 	bonVoyage: 									Boolean,	// Crime scene is on a train, plane, or boat
 	frenchVsEnglishCuisine:			Boolean,	// Running jokes in episode about British vs. French food
 	perpTriesToOutmartPoirot: 	Boolean,	// Perpetrator intentionally involves Poirot as part of the plot
+	diggingUpThePast: 					Boolean,  // Setting is in an archeogical dig in the Middle East
+	bridgeGame: 								Boolean,  // People play the card game Bridge
 	christmasSpecial:						Boolean		// Christmas episode
 });
 
