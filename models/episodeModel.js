@@ -42,7 +42,7 @@ var poirotTropes = new Schema({
 	bonVoyage: 									Boolean,	// Crime scene is on a train, plane, or boat
 	frenchVsEnglishCuisine:			Boolean,	// Running jokes in episode about British vs. French food
 	perpTriesToOutmartPoirot: 	Boolean,	// Perpetrator intentionally involves Poirot as part of the plot
-	diggingUpThePast: 					Boolean,  // Setting is in an archeogical dig in the Middle East
+	diggingUpThePast: 					Boolean,  // Setting is in an archaeological dig in the Middle East
 	bridgeGame: 								Boolean,  // People play the card game Bridge
 	christmasSpecial:						Boolean		// Christmas episode
 });
@@ -106,23 +106,8 @@ episodeSchema.statics.regexSearch = function(field, searchTerm) {
 }
 
 episodeSchema.statics.findCrime = function(crime) {
-return new Promise(
-	(resolve, reject) => {
-		this.find({})
-		.then(
-			(episodeList) => {
-				let query = [];
-				for (var i = episodeList.length - 1; i >= 0; i--) {
-					for (var j = episodeList[i].crimes.length - 1; j>=0; j--){
-						let compareString = episodeList[i].crimes[j].criminalAct.toUpperCase();
-						if (compareString.includes(crime.toUpperCase())) {
-							query.push(episodeList[i]._id.toString());
-						}
-					}
-				}
-				resolve(this.findByIdList(query));
-			})
-		.catch(err => console.log(err))
+	let regexTerm = new RegExp((crime), 'i');
+	return this.find({'crimes.criminalAct':{$regex:regexTerm}
 	})
 }
 
