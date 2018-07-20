@@ -105,10 +105,27 @@ episodeSchema.statics.regexSearch = function(field, searchTerm) {
 	return this.find({[field]:{$regex:regexTerm}});	
 }
 
-episodeSchema.statics.findCrime = function(crime) {
-	let regexTerm = new RegExp((crime), 'i');
-	return this.find({'crimes.criminalAct':{$regex:regexTerm}
-	})
+episodeSchema.statics.findCrime = function(queryObject) {
+
+	// Multi-param search of crimes, including: criminalAct, means, and motive 
+	// Checks if any of these 3 params was passed, and if so, adds it to 
+	// the search query
+
+	query = []
+
+	if (queryObject.criminalAct) {
+		query.push({"crimes.criminalAct": {$regex: new RegExp(queryObject.criminalAct, "i")}});
+	}
+
+	if (queryObject.means) {
+		query.push({"crimes.means": {$regex: new RegExp(queryObject.means, "i")}});
+	}
+
+	if (queryObject.motive) {
+		query.push({"crimes.motive": {$regex: new RegExp(queryObject.motive, "i")}});
+	}
+
+	return this.find({$and:query})
 }
 
 module.exports = mongoose.model('Episode', episodeSchema);
