@@ -14,37 +14,37 @@ var mainCharacters = new Schema({
 });
 
 var poirotTropes = new Schema({
-	poirotOnHoliday: 						Boolean,	// Setting is Poirot on holiday
 	poirotTriesToPreventMurder: Boolean,	// Poirot tries to prevent murder
 	poirotTriesToPreventCrime:  Boolean,	// Poirot tries to prevent other crime
+	poirotLenientJudgeAndJury: 	Boolean,	// Poirot solves the case or exposes a crime but does not punish the perpetrators
 	poirotCompulsiveSymmetry: 	Boolean,	// Poirot exhibits a compulsive obsession with symmetry and straightening items
 	poirotIsReallyBelgian: 			Boolean,	// Poirot is mistaken for French and informs them he's Belgian
-	poirotAvuncular: 						Boolean,	// Poirot assumes a protective role of a younger lady
-	poirotCommitsCrime:					Boolean,	// Poirot commits a crime
-	poirotSmitten:  						Boolean,	// Poirot in love
-	poirotLenientJudgeAndJury: 	Boolean,	// Poirot solves the case or exposes a crime but does not punish the perpetrators
 	poirotSolvesColdCase: 			Boolean,	// Poirot solves an old case
+	poirotCommitsCrime:					Boolean,	// Poirot commits a crime
 	poirotMatchmaker: 					Boolean,	// Poirot plays matchmaker and pairs a new couple
 	poirotRetirement: 					Boolean,	// Poirot retires
+	poirotAvuncular: 						Boolean,	// Poirot assumes a protective role of a younger lady
+	poirotOnHoliday: 						Boolean,	// Setting is Poirot on holiday
+	poirotSmitten:  						Boolean,	// Poirot in love
 	poirotDentist: 							Boolean,	// Poirot visits the dentist
-	hastingsGolf: 							Boolean,	// Hastings shows an interest in golf
-	hastingsCar:  							Boolean,	// Hastings shows an interest in cars
-	hastingsHobby: 							Boolean,  // Hastings takes up a hobby
-	hastingsSmitten: 						Boolean,	// Hastings in love
 	hastingsLadyPuzzlement:  		Boolean,  // Hastings doesn't understand women
 	hastingsSolvesCase: 				Boolean,  // Hastings solves the case
+	hastingsSmitten: 						Boolean,	// Hastings in love
 	hastingsTravel: 						Boolean,  // Hastings travels abroad
+	hastingsHobby: 							Boolean,  // Hastings takes up a hobby
+	hastingsGolf: 							Boolean,	// Hastings shows an interest in golf
+	hastingsCar:  							Boolean,	// Hastings shows an interest in cars
+	msLemonOrderAndMethod: 			Boolean,  // Ms. Lemon does detective work
 	msLemonsFilingSystem: 			Boolean,	// Ms. Lemon's filing system is featured in the episode
 	msLemonSupernatural: 				Boolean,	// Ms. Lemon shows interest or ability in the supernatural or occult
-	msLemonOrderAndMethod: 			Boolean,  // Ms. Lemon does detective work
+	perpTriesToOutmartPoirot: 	Boolean,	// Perpetrator intentionally involves Poirot as part of the plot
+	frenchVsEnglishCuisine:			Boolean,	// Running jokes in episode about British vs. French food
+	diggingUpThePast: 					Boolean,  // Setting is in an archaeological dig in the Middle East
+	christmasSpecial:						Boolean,	// Christmas episode
 	artImitatesArt:							Boolean,	// Episode involves a murder-mystery play or novel
 	hostIsMurdered: 						Boolean,	// The host of a party or invite is murdered at, during, or after the event
-	bonVoyage: 									Boolean,	// Crime scene is on a train, plane, or boat
-	frenchVsEnglishCuisine:			Boolean,	// Running jokes in episode about British vs. French food
-	perpTriesToOutmartPoirot: 	Boolean,	// Perpetrator intentionally involves Poirot as part of the plot
-	diggingUpThePast: 					Boolean,  // Setting is in an archaeological dig in the Middle East
 	bridgeGame: 								Boolean,  // People play the card game Bridge
-	christmasSpecial:						Boolean		// Christmas episode
+	bonVoyage: 									Boolean	  // Crime scene is on a train, plane, or boat
 });
 
 var crimeSchema = new Schema({
@@ -95,9 +95,19 @@ episodeSchema.statics.findEpisode = function(season,episode) {
 	});
 }
 
-episodeSchema.statics.findTrope = function(tropeType) {
-	let query = "tropes." + tropeType;
-	return this.find({[query]:true});
+episodeSchema.statics.findTrope = function(queryObject) {
+
+	// Search of tropes.  Accepts any number of trope params, case sensitive
+
+	query = [];
+	console.log(queryObject);
+	for (var key in queryObject) {
+	    if (queryObject.hasOwnProperty(key)) {
+	        let text = "tropes." + queryObject[key];
+	        query.push({[text]:true});
+	    }
+	  }
+	return this.find({$and:query});
 }
 
 episodeSchema.statics.regexSearch = function(field, searchTerm) {
@@ -107,25 +117,24 @@ episodeSchema.statics.regexSearch = function(field, searchTerm) {
 
 episodeSchema.statics.findCrime = function(queryObject) {
 
-	// Multi-param search of crimes, including: criminalAct, means, and motive 
-	// Checks if any of these 3 params was passed, and if so, adds it to 
-	// the search query
+	// Multi-param search of crimes, including: criminalAct, means, and motive
+	// Checks if any of these 3 params was passed, and if so, adds it to the search query
 
-	query = []
+	query = [];
 
 	if (queryObject.criminalAct) {
 		query.push({"crimes.criminalAct": {$regex: new RegExp(queryObject.criminalAct, "i")}});
-	}
+	};
 
 	if (queryObject.means) {
 		query.push({"crimes.means": {$regex: new RegExp(queryObject.means, "i")}});
-	}
+	};
 
 	if (queryObject.motive) {
 		query.push({"crimes.motive": {$regex: new RegExp(queryObject.motive, "i")}});
-	}
+	};
 
-	return this.find({$and:query})
+	return this.find({$and:query});
 }
 
 module.exports = mongoose.model('Episode', episodeSchema);
