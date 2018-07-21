@@ -104,21 +104,31 @@ episodeRouter.route('/character/:characterName')
 		.catch((err) => next(err));
 	})
 
-// Route at /crime:/criminalAct to find episodes with the specified criminalAct ___________________
-	episodeRouter.route('/crime/:criminalAct')
-		.get((req,res,next) => {
-			let criminalAct = req.params.criminalAct.toLowerCase();
-			Episode.findCrime(criminalAct)
-			.then(
-				(response) => {{okFactory(res, response);}},
-				(err) 		 => next(err))
-			.catch((err) => next(err));
-		})
+// Route at /crime with 3 query AND-inclusive search options: criminalAct, means, or motive _______
+
+episodeRouter.route('/crime')
+.get((req,res,next) => {
+	let queryObject = {}
+	if (req.query.criminalAct)  {queryObject.criminalAct = req.query.criminalAct};
+	if (req.query.means) 				{queryObject.means = req.query.means};
+	if (req.query.motive) 			{queryObject.motive = req.query.motive};
+
+	if (queryObject == {}) {
+		res.statusCode = 400;
+		res.end("Bad request.  Request must include at least one of: criminalAct, means, or motive.");
+	};
+	Episode.findCrime(queryObject)
+	.then(
+		(response) => {{okFactory(res, response);}},
+		(err) 		 => next(err))
+	.catch((err) => next(err));
+})
+
 
 // Route at /s:seasonNumber to find all episodes in a season_______________________________________
 episodeRouter.route('/s:seasonNumber')
 	.get((req,res,next) => {
-		Episode.findSeason(req.params.seasonNumber, null)
+		Episode.findSeason(req.params.seasonNumber)
 		.then(
 			(response) => {{okFactory(res, response);}},
 			(err) 		 => next(err))
@@ -135,10 +145,10 @@ episodeRouter.route('/s:seasonNumber/e:episodeNumber')
 		.catch((err) => next(err));
 	})
 
-// Route at /s:seasonNumber/e:episodeNumber to find a specifc episode in a season__________________
-episodeRouter.route('/tropes/:tropeType')
+// Route at /tropes/ with query find 1 or more tropes (AND-inclusive, case sensitive) _____________
+episodeRouter.route('/tropes/')
 .get((req,res,next) => {
-	Episode.findTrope(req.params.tropeType)
+	Episode.findTrope(req.query)
 	.then(
 		(response) => {{okFactory(res, response);}},
 		(err) 		 => next(err))
@@ -185,6 +195,7 @@ episodeRouter.route('/director/:searchTerm')
 	.catch((err) => next(err));
 })
 
+// Route at /mood/:searchTerm for regex search within mood field___________________________________
 episodeRouter.route('/mood/:searchTerm')
 .get((req,res,next) => {
 	Episode.regexSearch("mood", req.params.searchTerm)
