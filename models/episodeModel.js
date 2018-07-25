@@ -76,19 +76,31 @@ var episodeSchema = new Schema({
 // Statics ____________________________________________________________________
 
 episodeSchema.statics.findByIdList = function(arrayOfIds) {
+
+	// Returns 1 episode or many episodes given an array of mongoDB _ids
+
 	return this.find({"_id":{$in:[arrayOfIds]}});
 }
 
 episodeSchema.statics.findMainCharacter = function(name) {
+	
+	// Returns all episodes featuring one main character
+
 	let query = "mainCharacters." + name;
 	return this.find({[query]:true});
 }
 
 episodeSchema.statics.findSeason = function(season) {
+
+	// Returns all episodes of a season, given the season number
+
 	return this.find({"season":[season]});
 }
 
 episodeSchema.statics.findEpisode = function(season,episode) {
+
+	// Returns 1 episode given season and episode number
+
 	return this.find({
 		"season": [season],
 		"episode":[episode]
@@ -111,6 +123,9 @@ episodeSchema.statics.findTrope = function(queryObject) {
 }
 
 episodeSchema.statics.regexSearch = function(field, searchTerm) {
+
+	// Case-insensitive regex term search of episodeSchema fields
+
 	let regexTerm = new RegExp((searchTerm), 'i');
 	return this.find({[field]:{$regex:regexTerm}});	
 }
