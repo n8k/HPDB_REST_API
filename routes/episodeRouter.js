@@ -102,7 +102,7 @@ episodeRouter.route('/characters/')
 
 		Episode.booleanSearch("mainCharacters", lowerCaseQuery)
 		.then(
-			(response) => {{okFactory(res, response);}},
+			(response) => {okFactory(res, response);},
 			(err) 		 => next(err))
 		.catch((err) => next(err));
 	})
@@ -111,21 +111,21 @@ episodeRouter.route('/characters/')
 // & opportunity.
 
 episodeRouter.route('/crime')
-.get((req,res,next) => {
-	let queryObject = {}
-	Episode.findCrime(req.query)
-	.then(
-		(response) => {{okFactory(res, response);}},
-		(err) 		 => next(err))
-	.catch((err) => next(err));
-})
+	.get((req,res,next) => {
+		let queryObject = {}
+		Episode.findCrime(req.query)
+		.then(
+			(response) => {okFactory(res, response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
 
 // Route at /s:seasonNumber to find all episodes in a season_______________________________________
 episodeRouter.route('/s:seasonNumber')
 	.get((req,res,next) => {
 		Episode.findSeason(req.params.seasonNumber)
 		.then(
-			(response) => {{okFactory(res, response);}},
+			(response) => {okFactory(res, response);},
 			(err) 		 => next(err))
 		.catch((err) => next(err));
 	})
@@ -135,68 +135,69 @@ episodeRouter.route('/s:seasonNumber/e:episodeNumber')
 	.get((req,res,next) => {
 		Episode.findEpisode(req.params.seasonNumber, req.params.episodeNumber)
 		.then(
-			(response) => {{okFactory(res, response);}},
+			(response) => {okFactory(res, response);},
 			(err) 		 => next(err))
 		.catch((err) => next(err));
 	})
 
 // Route at /tropes/ with query find 1 or more tropes (AND-inclusive, case sensitive) _____________
 episodeRouter.route('/tropes/')
-.get((req,res,next) => {
-	Episode.booleanSearch("tropes", req.query)
-	.then(
-		(response) => {{okFactory(res, response);}},
-		(err) 		 => next(err))
-	.catch((err) => next(err));
-})
+	.get((req,res,next) => {
+		Episode.booleanSearch("tropes", req.query)
+		.then(
+			(response) => {okFactory(res, response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
 
 // Route at /title/:searchTerm for regex search of words within the episode title__________________
 episodeRouter.route('/title/:searchTerm')
-.get((req,res,next) => {
-	Episode.regexSearch("title", req.params.searchTerm)
-	.then(
-		(response) => {{okFactory(res, response);}},
-		(err) 		 => next(err))
-	.catch((err) => next(err));
-})
+	.get((req,res,next) => {
+		Episode.regexSearch("title", req.params.searchTerm)
+		.then(
+			(response) => {okFactory(res, response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
 
 // Route at /summary/:searchTerm for regex search of words within the episode title__________________
 episodeRouter.route('/summary/:searchTerm')
-.get((req,res,next) => {
-	Episode.regexSearch("episodeSummary", req.params.searchTerm)
-	.then(
-		(response) => {{okFactory(res, response);}},
-		(err) 		 => next(err))
-	.catch((err) => next(err));
-})
+	.get((req,res,next) => {
+		Episode.regexSearch("episodeSummary", req.params.searchTerm)
+		.then(
+			(response) => {okFactory(res, response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
 
 // Route at /writer/:searchTerm for regex search of words within writer field______________________
 episodeRouter.route('/writer/:searchTerm')
-.get((req,res,next) => {
-	Episode.regexSearch("writer", req.params.searchTerm)
-	.then(
-		(response) => {{okFactory(res, response);}},
-		(err) 		 => next(err))
-	.catch((err) => next(err));
-})
+	.get((req,res,next) => {
+		Episode.regexSearch("writer", req.params.searchTerm)
+		.then(
+			(response) => {okFactory(res, response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
 
 // Route at /writer/:searchTerm for regex search of words within writer field______________________
 episodeRouter.route('/director/:searchTerm')
-.get((req,res,next) => {
-	Episode.regexSearch("director", req.params.searchTerm)
-	.then(
-		(response) => {{okFactory(res, response);}},
-		(err) 		 => next(err))
-	.catch((err) => next(err));
-})
+	.get((req,res,next) => {
+		Episode.regexSearch("director", req.params.searchTerm)
+		.then(
+			(response) => {okFactory(res, response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
 
 // Route at /mood/:searchTerm for regex search within mood field___________________________________
 episodeRouter.route('/mood/:searchTerm')
-.get((req,res,next) => {
-	Episode.regexSearch("mood", req.params.searchTerm)
-	.then(
-		(response) => {{okFactory(res, response);}},
-		(err) 		 => next(err))
-	.catch((err) => next(err));
-})
+	.get((req,res,next) => {
+		Episode.regexSearch("mood", req.params.searchTerm)
+		.then(
+			(response) => {okFactory(res, response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
+
 module.exports = episodeRouter;
