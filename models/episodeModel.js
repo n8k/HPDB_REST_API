@@ -6,11 +6,11 @@ mongoose.Promise = require('bluebird');
 // Schema _____________________________________________________________________
 
 var mainCharacters = new Schema({
-	poirot: 		{type: Boolean, default: true},
 	hastings: 	Boolean,
 	lemon: 			Boolean,
 	japp: 			Boolean,
-	oliver:			Boolean
+	oliver:			Boolean,
+	george:			Boolean
 });
 
 var poirotTropes = new Schema({
