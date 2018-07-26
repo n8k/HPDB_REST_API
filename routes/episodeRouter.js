@@ -94,36 +94,31 @@ episodeRouter.route('/id/:episodeId')
 
 // Route at /character/:characterName to find episodes with one main character ____________________
 
-episodeRouter.route('/character/:characterName')
+episodeRouter.route('/characters/')
 	.get((req,res,next) => {
-		characterName = req.params.characterName.toLowerCase();
-		Episode.findMainCharacter(characterName)
+
+		lowerCaseQuery = Object.keys(req.query).reduce(
+			(newObj, key) => (newObj[key] = req.query[key].toLowerCase(), newObj), {})
+
+		Episode.booleanSearch("mainCharacters", lowerCaseQuery)
 		.then(
 			(response) => {{okFactory(res, response);}},
 			(err) 		 => next(err))
 		.catch((err) => next(err));
 	})
 
-// Route at /crime with 3 query AND-inclusive search options: criminalAct, means, or motive _______
+// Route at /crime with case-insensitive search of criminalAct, perpetrator, victim, means, motive,
+// & opportunity.
 
 episodeRouter.route('/crime')
 .get((req,res,next) => {
 	let queryObject = {}
-	if (req.query.criminalAct)  {queryObject.criminalAct = req.query.criminalAct};
-	if (req.query.means) 				{queryObject.means = req.query.means};
-	if (req.query.motive) 			{queryObject.motive = req.query.motive};
-
-	if (queryObject == {}) {
-		res.statusCode = 400;
-		res.end("Bad request.  Request must include at least one of: criminalAct, means, or motive.");
-	};
-	Episode.findCrime(queryObject)
+	Episode.findCrime(req.query)
 	.then(
 		(response) => {{okFactory(res, response);}},
 		(err) 		 => next(err))
 	.catch((err) => next(err));
 })
-
 
 // Route at /s:seasonNumber to find all episodes in a season_______________________________________
 episodeRouter.route('/s:seasonNumber')
@@ -148,7 +143,7 @@ episodeRouter.route('/s:seasonNumber/e:episodeNumber')
 // Route at /tropes/ with query find 1 or more tropes (AND-inclusive, case sensitive) _____________
 episodeRouter.route('/tropes/')
 .get((req,res,next) => {
-	Episode.findTrope(req.query)
+	Episode.booleanSearch("tropes", req.query)
 	.then(
 		(response) => {{okFactory(res, response);}},
 		(err) 		 => next(err))

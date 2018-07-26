@@ -82,14 +82,6 @@ episodeSchema.statics.findByIdList = function(arrayOfIds) {
 	return this.find({"_id":{$in:[arrayOfIds]}});
 }
 
-episodeSchema.statics.findMainCharacter = function(name) {
-	
-	// Returns all episodes featuring one main character
-
-	let query = "mainCharacters." + name;
-	return this.find({[query]:true});
-}
-
 episodeSchema.statics.findSeason = function(season) {
 
 	// Returns all episodes of a season, given the season number
@@ -107,16 +99,16 @@ episodeSchema.statics.findEpisode = function(season,episode) {
 	});
 }
 
-episodeSchema.statics.findTrope = function(queryObject) {
+episodeSchema.statics.booleanSearch = function(targetField, queryObject) {
 
-	// Search of tropes.  Accepts any number of trope params, case sensitive
+	// Generalized function for search of any Boolean fields in the schema.
+	// Accepts any number of query-strings in queryObject and a target field.
 
 	query = [];
-	console.log(queryObject);
 	for (var key in queryObject) {
 	    if (queryObject.hasOwnProperty(key)) {
-	        let text = "tropes." + queryObject[key];
-	        query.push({[text]:true});
+	        let field = [targetField] + "." + queryObject[key];
+	        query.push({[field]:true});
 	    }
 	  }
 	return this.find({$and:query});
@@ -132,23 +124,16 @@ episodeSchema.statics.regexSearch = function(field, searchTerm) {
 
 episodeSchema.statics.findCrime = function(queryObject) {
 
-	// Multi-param search of crimes, including: criminalAct, means, and motive
-	// Checks if any of these 3 params was passed, and if so, adds it to the search query
+	// Multi-param case-insensitive query-string search of crimes, including:
+	// criminalAct, perpetrator, victim, means, motive, opportunity.
 
 	query = [];
-
-	if (queryObject.criminalAct) {
-		query.push({"crimes.criminalAct": {$regex: new RegExp(queryObject.criminalAct, "i")}});
-	};
-
-	if (queryObject.means) {
-		query.push({"crimes.means": {$regex: new RegExp(queryObject.means, "i")}});
-	};
-
-	if (queryObject.motive) {
-		query.push({"crimes.motive": {$regex: new RegExp(queryObject.motive, "i")}});
-	};
-
+	for (var key in queryObject) {
+		if (queryObject.hasOwnProperty(key)) {
+			let field = "crimes." + key;
+			query.push({[field]:{$regex: new RegExp(queryObject[key], "i")}});
+		}
+	}
 	return this.find({$and:query});
 }
 
