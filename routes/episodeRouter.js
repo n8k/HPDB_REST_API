@@ -200,4 +200,39 @@ episodeRouter.route('/mood/:searchTerm')
 		.catch((err) => next(err));
 	})
 
+// Route at /search/ for global search ____________________________________________________________
+episodeRouter.route('/global/')
+	.get((req,res,next) => {
+
+		// Robust search of all schema in the database.  This route accepts multiple query-strings:
+		// 
+		// QUERYSTRING 						FORMAT  								EXAMPLE
+		// 
+		// season=								Number  								1
+		// episode=								Number  								1
+		// title= 								String  								Adventure
+		// episodeSummary=				String  								snowbound
+		// originalAirDate=				YYYY-MM-DD String 	 		1970-01-01
+		// supportingCharacters=	String  								Eliza Dunn
+		// mainCharacters=				String 									hastings
+		// mainCharacters=				String comma-separated 	hastings,lemon,japp 
+		// tropes= 								String 									poirotIsReallyBelgian
+		// tropes= 								String comma-separated 	poirotIsReallyBelgian,hastingsGolf
+		// director=							String  								Edward Bennett
+		// writer=								String 									Clive Exton
+		// mood=									String 									light
+		// perpetrator=						String 									Carla Romero
+		// victim=								String 									The London and Scottish Bank
+		// criminalAct=						String 									Murder
+		// means=									String 									Pistol
+		// motive=								String 									Greed
+		// opportunity=						String 									Posing as
+
+		Episode.globalSearch(req.query)
+		.then(
+			(response) => {okFactory(res, response);},
+			(err) 		 => next(err))
+		.catch((err) => next(err));
+	})
+
 module.exports = episodeRouter;

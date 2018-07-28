@@ -1,7 +1,6 @@
 // Require ____________________________________________________________________
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-mongoose.Promise = require('bluebird');
 
 // Schema _____________________________________________________________________
 
@@ -134,6 +133,69 @@ episodeSchema.statics.findCrime = function(queryObject) {
 			query.push({[field]:{$regex: new RegExp(queryObject[key], "i")}});
 		}
 	}
+	return this.find({$and:query});
+}
+
+episodeSchema.statics.globalSearch = function(queryObject) {
+
+	// Robust search of all schema in the database.  This function inspects all
+	// of queryObject's keys and then formats each as a mongoDB search-ready object.
+	// All formated objects are then added to a mongoDB $and-query.
+	// 
+	// It will generate a 400 bad-request error if the key does not match the correct format.
+	// 
+	// mainCharacters and tropes accept multiple parameters separated by commas,
+	// for example /global?mainCharacters=hastings,lemon,japp returns all episodes with 
+	// Captain Hastings, Miss Lemon and Inspector Japp.
+	// 
+	// All other keys accept only a single parameter.
+
+	var query = [];
+	var invalidKeys  = [];
+	var dateField    = ['originalAirDate'];  
+	var numberField  = ['season','episode'];
+	var booleanField = ['mainCharacters','tropes'];
+	var stringField  = ['title','episodeSummary','director','writer','mood','supportingCharacters'];
+	var crimeField   = ['perpetrator','victim','criminalAct','means','motive','opportunity'];
+	var allFields    = dateField.concat(numberField).concat(booleanField).concat(stringField).concat(crimeField);
+
+	for (var key in queryObject) {
+		if (!allFields.includes(key)) {
+			invalidKeys.push(key);
+		}
+		if (dateField.includes(key)) {
+			var date = new Date(queryObject[key]);
+			query.push({[key]:date});
+		}
+		if (numberField.includes(key)) {
+			query.push({[key]:[queryObject[key]]});
+		}
+		if (booleanField.includes(key)) {
+			splitString = queryObject[key].split(",");
+			for (var i = 0; i < splitString.length; i++) {
+				let field = key + "." + splitString[i];
+				query.push({[field]:true});
+			}
+		}
+		if (stringField.includes(key)) {
+			let regexTerm = new RegExp((queryObject[key]), 'i');
+			query.push({[key]:{$regex:regexTerm}});
+		}
+		if (crimeField.includes(key)) {
+			let field = "crimes." + key;
+			query.push({[field]:{$regex: new RegExp(queryObject[key], "i")}});	
+		}
+	}
+	if (invalidKeys.length > 0) {
+		var errMess = 'Bad request. Invalid query parameter'
+		if (invalidKeys.length > 1)  {errMess = errMess + "s"}
+		errMess = errMess + ":\n" + invalidKeys.toString();
+
+		var err = new Error(errMess);
+		err.status = 400;
+		throw err;
+	}
+
 	return this.find({$and:query});
 }
 
