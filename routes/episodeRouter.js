@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 // const authenticate = require('../authenticate');
-// const cors = require('cors');
+const cors = require('./cors');
 const Episode = require('../models/episodeModel');
 
 const episodeRouter = express.Router();
@@ -33,7 +33,8 @@ function forbiddenFactory(request, response) {
 // Route at /episode/ for all episodes_____________________________________________________________
 
 episodeRouter.route('/')
-	.get((req, res, next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req, res, next) => {
 		Episode.find({})
 		.then(
 			(response) => { okFactory(res, response);},
@@ -41,9 +42,9 @@ episodeRouter.route('/')
 		.catch((err) => next(err));
 	})
 
-	.put((req,res,next) => { forbiddenFactory(req,res); })
+	.put(cors.corsWithOptions, (req,res,next) => { forbiddenFactory(req,res); })
 
-	.post((req,res,next) => {
+	.post(cors.corsWithOptions, (req,res,next) => {
 		Episode.create(req.body)
 		.then(
 			(response) => { okFactory(res, response);},
@@ -51,7 +52,7 @@ episodeRouter.route('/')
 		.catch((err) => next(err));
 	})
 
-	.delete((req,res,next) => {
+	.delete(cors.corsWithOptions, (req,res,next) => {
 		Episode.remove({})
 		.then(
 			(response) => { okFactory(res, response);},
@@ -62,8 +63,8 @@ episodeRouter.route('/')
 // Route at /episode/:episodeId for one episode____________________________________________________
 
 episodeRouter.route('/id/:episodeId')
-
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.findById(req.params.episodeId)
 		.then(
 			(response) => { okFactory(res, response);},
@@ -71,7 +72,7 @@ episodeRouter.route('/id/:episodeId')
 		.catch((err) => next(err));
 	})
 
-	.put((req, res, next) => {
+	.put(cors.corsWithOptions, (req, res, next) => {
 		Episode.findByIdAndUpdate(
 			req.params.episodeId,
 			{ $set: req.body }, 
@@ -82,9 +83,9 @@ episodeRouter.route('/id/:episodeId')
 		.catch((err) => next(err));
 	})
 
-	.post((req,res,next) => { forbiddenFactory(req,res); })
+	.post(cors.corsWithOptions, (req,res,next) => { forbiddenFactory(req,res); })
 
-	.delete((req,res,next) => {
+	.delete(cors.corsWithOptions, (req,res,next) => {
 		Episode.findByIdAndRemove(req.params.episodeId)
 		.then(
 			(response) => { okFactory(res, response);},
@@ -95,7 +96,8 @@ episodeRouter.route('/id/:episodeId')
 // Route at /character/:characterName to find episodes with one main character ____________________
 
 episodeRouter.route('/characters/')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 
 		lowerCaseQuery = Object.keys(req.query).reduce(
 			(newObj, key) => (newObj[key] = req.query[key].toLowerCase(), newObj), {})
@@ -111,7 +113,8 @@ episodeRouter.route('/characters/')
 // & opportunity.
 
 episodeRouter.route('/crime')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		let queryObject = {}
 		Episode.findCrime(req.query)
 		.then(
@@ -122,7 +125,8 @@ episodeRouter.route('/crime')
 
 // Route at /s:seasonNumber to find all episodes in a season_______________________________________
 episodeRouter.route('/s:seasonNumber')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.findSeason(req.params.seasonNumber)
 		.then(
 			(response) => {okFactory(res, response);},
@@ -132,7 +136,8 @@ episodeRouter.route('/s:seasonNumber')
 
 // Route at /s:seasonNumber/e:episodeNumber to find a specifc episode in a season__________________
 episodeRouter.route('/s:seasonNumber/e:episodeNumber')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.findEpisode(req.params.seasonNumber, req.params.episodeNumber)
 		.then(
 			(response) => {okFactory(res, response);},
@@ -142,7 +147,8 @@ episodeRouter.route('/s:seasonNumber/e:episodeNumber')
 
 // Route at /tropes/ with query find 1 or more tropes (AND-inclusive, case sensitive) _____________
 episodeRouter.route('/tropes/')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.booleanSearch("tropes", req.query)
 		.then(
 			(response) => {okFactory(res, response);},
@@ -152,7 +158,8 @@ episodeRouter.route('/tropes/')
 
 // Route at /title/:searchTerm for regex search of words within the episode title__________________
 episodeRouter.route('/title/:searchTerm')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.regexSearch("title", req.params.searchTerm)
 		.then(
 			(response) => {okFactory(res, response);},
@@ -162,7 +169,8 @@ episodeRouter.route('/title/:searchTerm')
 
 // Route at /summary/:searchTerm for regex search of words within the episode title__________________
 episodeRouter.route('/summary/:searchTerm')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.regexSearch("episodeSummary", req.params.searchTerm)
 		.then(
 			(response) => {okFactory(res, response);},
@@ -172,7 +180,8 @@ episodeRouter.route('/summary/:searchTerm')
 
 // Route at /writer/:searchTerm for regex search of words within writer field______________________
 episodeRouter.route('/writer/:searchTerm')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.regexSearch("writer", req.params.searchTerm)
 		.then(
 			(response) => {okFactory(res, response);},
@@ -182,7 +191,8 @@ episodeRouter.route('/writer/:searchTerm')
 
 // Route at /writer/:searchTerm for regex search of words within writer field______________________
 episodeRouter.route('/director/:searchTerm')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.regexSearch("director", req.params.searchTerm)
 		.then(
 			(response) => {okFactory(res, response);},
@@ -192,7 +202,8 @@ episodeRouter.route('/director/:searchTerm')
 
 // Route at /mood/:searchTerm for regex search within mood field___________________________________
 episodeRouter.route('/mood/:searchTerm')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 		Episode.regexSearch("mood", req.params.searchTerm)
 		.then(
 			(response) => {okFactory(res, response);},
@@ -202,7 +213,8 @@ episodeRouter.route('/mood/:searchTerm')
 
 // Route at /search/ for global search ____________________________________________________________
 episodeRouter.route('/global/')
-	.get((req,res,next) => {
+	.options(cors.corsWithOptions, (req,res) => {res.sendStatus(200);})
+	.get(cors.corsWithOptions, (req,res,next) => {
 
 		// Robust search of all schema in the database.  This route accepts multiple query-strings:
 		// 

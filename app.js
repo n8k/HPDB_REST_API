@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// CORS
+const cors = require('./routes/cors');
+
 // Mongoose ___________________________________________________________________
 const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
@@ -37,9 +40,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Use routes _________________________________________________________________
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/episode', episodeRouter);
+app.use('/', cors.corsWithOptions, episodeRouter);
+app.use('/users', cors.corsWithOptions, usersRouter);
+app.use('/episode', cors.corsWithOptions, episodeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
