@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Config
+const config = require('./config_secret');
+
 // CORS
 const cors = require('./routes/cors');
 
@@ -20,7 +23,7 @@ var usersRouter = require('./routes/users');
 var episodeRouter = require('./routes/episodeRouter');
 
 // Mongo URL settings and connect _____________________________________________
-const url = 'mongodb://localhost:27017/hpdb';
+const url = 'mongodb://' + config.dbuser + ':' + config.dbpassword + '@ds119374.mlab.com:19374/hpdb_rest_api';
 const connect = mongoose.connect(url, {});
 connect.then(
 	(db)  => { console.log("Connected to mongoDB at: " + url); },
