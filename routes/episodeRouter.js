@@ -44,21 +44,9 @@ episodeRouter.route('/')
 
 	.put(cors.corsWithOptions, (req,res,next) => { forbiddenFactory(req,res); })
 
-	.post(cors.corsWithOptions, (req,res,next) => {
-		Episode.create(req.body)
-		.then(
-			(response) => { okFactory(res, response);},
-			(err) 		 => next(err))
-		.catch((err) => next(err));
-	})
+	.post(cors.corsWithOptions, (req,res,next) => { forbiddenFactory(req,res); })
 
-	.delete(cors.corsWithOptions, (req,res,next) => {
-		Episode.remove({})
-		.then(
-			(response) => { okFactory(res, response);},
-			(err) 		 => next(err))
-		.catch((err) => next(err));
-	})
+	.delete(cors.corsWithOptions, (req,res,next) => { forbiddenFactory(req,res); })
 
 // Route at /episode/:episodeId for one episode____________________________________________________
 
@@ -72,26 +60,11 @@ episodeRouter.route('/id/:episodeId')
 		.catch((err) => next(err));
 	})
 
-	.put(cors.corsWithOptions, (req, res, next) => {
-		Episode.findByIdAndUpdate(
-			req.params.episodeId,
-			{ $set: req.body }, 
-			{ new: true })
-		.then(
-			(response) => { okFactory(res, response);},
-			(err)  		 => next(err))
-		.catch((err) => next(err));
-	})
+	.put(cors.corsWithOptions, (req,res,next) => { forbiddenFactory(req,res); })
 
 	.post(cors.corsWithOptions, (req,res,next) => { forbiddenFactory(req,res); })
 
-	.delete(cors.corsWithOptions, (req,res,next) => {
-		Episode.findByIdAndRemove(req.params.episodeId)
-		.then(
-			(response) => { okFactory(res, response);},
-			(err) 		 => next(err))
-		.catch((err) => next(err));
-	})
+	.delete(cors.corsWithOptions, (req,res,next) => { forbiddenFactory(req,res); })
 
 // Route at /character/:characterName to find episodes with one main character ____________________
 
