@@ -7,15 +7,16 @@ const whitelist = [
 	'https://localhost:3443',
 	'http://localhost:4200',
 	'https://localhost:4200',
-	'http://localhost:3000/undefined'
+	'http://localhost:3000/undefined',
+	'https://poirotdb.appspot.com'
 	]
 
 
 var corsOptionsDelegate = (req,callback)=> {
 	var corsOptions = {
-		"origin": 'http://localhost:4200',
+		"origin": 'https://poirotdb.appspot.com',
 		"optionSucessStatus":200,
-		"Access-Control-Allow-Origin":"http://localhost:4200"
+		"Access-Control-Allow-Origin":"https://poirotdb.appspot.com"
 	}
 	callback(null, corsOptions);
 };
