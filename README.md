@@ -1,4 +1,4 @@
-# Frontend for Hercule Poirot Episode Database
+# Backend for Hercule Poirot Episode Database
 Search for your favourite episodes from all 13 seasons of Agatha Christie's Poirot.
 
 ## How to Use
